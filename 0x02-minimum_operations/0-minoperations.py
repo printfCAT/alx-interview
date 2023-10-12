@@ -4,7 +4,7 @@
 
 def minOperations(n):
     """ find fewest no. of ops to produce 'n' H characters """
-    if n <= 1:
+    if n < 2:
         return 0
     
     operations = [0] * (n + 1)
