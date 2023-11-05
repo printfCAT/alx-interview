@@ -4,6 +4,7 @@
 
 import sys
 
+
 def nqueens(N):
     """N queens function"""
     def is_safe_to_place_queen(board, row, col):
