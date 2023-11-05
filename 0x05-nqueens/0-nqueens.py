@@ -45,12 +45,12 @@ if __name__ == "__main__":
         sys.exit(1)
 
     try:
-        N = int(sys.argv[1])
-        if N < 4:
+        n = int(sys.argv[1])
+        if n < 4:
             print("N must be at least 4")
             sys.exit(1)
 
-        solutions = nqueens(N)
+        solutions = nqueens(n)
         for solution in solutions:
             print(solution)
 
