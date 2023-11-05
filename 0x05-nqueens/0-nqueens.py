@@ -1,9 +1,11 @@
 #!/usr/bin/python3
 """function module to solve the N queens puzzle"""
+
+
 import sys
 
 
-def N_Queens(N):
+def nqueens(N):
     """N queens function"""
     def is_safe_to_place_queen(board, row, col):
         """helper function to check if it is safe to place the queen"""
@@ -74,7 +76,6 @@ if __name__ == "__main__":
                     coordinates.append([row_index, col_index])
         print(coordinates)
 
-    solutions = N_Queens(queens)
-    for solution in solutions:
+    Solutions = nqueens(queens)
+    for solution in Solutions:
         print_coordinates(solution)
-        
