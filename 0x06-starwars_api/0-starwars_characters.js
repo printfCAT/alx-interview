@@ -1,40 +1,25 @@
 #!/usr/bin/node
 const request = require('request');
+const movieId = process.argv[2];
+const options = {
+  url: 'https://swapi-api.hbtn.io/api/films/' + movieId,
+  method: 'GET'
+};
 
-function getCharacters (movieId) {
-  return new Promise((resolve, reject) => {
-    request({ uri: `https://swapi-api.alx-tools.com/api/films/${movieId}`, json: true }, (filmError, filmResponse, filmBody) => {
-      if (filmError) {
-        reject(new Error(`Error fetching film data: ${filmError.message}`));
-      } else {
-        const { characters } = filmBody;
-        const characterPromises = characters.map((characterUrl) => new Promise((resolve, reject) => {
-          request({ uri: characterUrl, json: true }, (characterError, characterResponse, characterBody) => {
-            if (characterError) {
-              reject(new Error(`Error fetching character data: ${characterError.message}`));
-            } else {
-              resolve(characterBody.name);
-            }
-          });
-        }));
+request(options, function (error, response, body) {
+  if (!error) {
+    const characters = JSON.parse(body).characters;
+    printCharacters(characters, 0);
+  }
+});
 
-        Promise.all(characterPromises)
-          .then((characterNames) => resolve(characterNames))
-          .catch((characterError) => reject(characterError));
+function printCharacters (characters, index) {
+  request(characters[index], function (error, response, body) {
+    if (!error) {
+      console.log(JSON.parse(body).name);
+      if (index + 1 < characters.length) {
+        printCharacters(characters, index + 1);
       }
-    });
+    }
   });
 }
-
-if (process.argv.length !== 3) {
-  console.error('Usage: node script.js <movie_id>');
-  process.exit(1);
-}
-
-const movieId = process.argv[2];
-
-getCharacters(movieId)
-  .then((characterNames) => {
-    characterNames.forEach((name) => console.log(name));
-  })
-  .catch((error) => console.error(`Error: ${error.message}`));
