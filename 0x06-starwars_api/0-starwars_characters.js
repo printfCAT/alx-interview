@@ -1,19 +1,19 @@
 #!/usr/bin/node
 const request = require('request');
 
-function getCharacters(movieId) {
+function getCharacters (movieId) {
   return new Promise((resolve, reject) => {
     request({ uri: `https://swapi-api.alx-tools.com/api/films/${movieId}`, json: true }, (filmError, filmResponse, filmBody) => {
       if (filmError) {
         reject(new Error(`Error fetching film data: ${filmError.message}`));
       } else {
         const { characters } = filmBody;
-        const characterPromises = characters.map((characterUrl) => new Promise((characterResolve, characterReject) => {
+        const characterPromises = characters.map((characterUrl) => new Promise((resolve, reject) => {
           request({ uri: characterUrl, json: true }, (characterError, characterResponse, characterBody) => {
             if (characterError) {
-              characterReject(new Error(`Error fetching character data: ${characterError.message}`));
+              reject(new Error(`Error fetching character data: ${characterError.message}`));
             } else {
-              characterResolve(characterBody.name);
+              resolve(characterBody.name);
             }
           });
         }));
